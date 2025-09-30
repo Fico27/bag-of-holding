@@ -2,12 +2,15 @@ const express = require("express");
 const path = require("node:path");
 const session = require("express-session");
 const passport = require("passport");
-const { error } = require("node:console");
 const app = express();
 require("dotenv").config();
 
-//Reminder to require passport config when setup
+//Import routers
 
+const homepageRouter = require("./routes/homepage");
+
+//Reminder to require passport config when setup
+// *****************************
 //Here
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -24,6 +27,10 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Routing
+
+app.use("/", homepageRouter);
 
 app.use("/", (req, res) => {
   res.send("I will be the login page.");
