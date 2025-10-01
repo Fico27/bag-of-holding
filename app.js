@@ -1,17 +1,18 @@
 const express = require("express");
 const path = require("node:path");
 const session = require("express-session");
-const passport = require("passport");
+const passport = require("./config/passport");
+const {PrismaClient, PrismaClientExtends} = require("@prisma/client");
+const { PrismaSessionStore} = require("@quixo3/prisma-session-store")
 const app = express();
+const prisma = new PrismaClient();
 require("dotenv").config();
 
 //Import routers
 
 const homepageRouter = require("./routes/homepage");
+//
 
-//Reminder to require passport config when setup
-// *****************************
-//Here
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -22,6 +23,14 @@ app.use(
     secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
+    store: new PrismaSessionStore(
+      prisma,
+      {
+        checkPeriod: 2* 60 * 60 * 1000, // 24 hour session
+        dbRecordIdIsSessionId: true,
+        dbRecordIdFunction: undefined,
+      }
+    )
   })
 );
 
@@ -32,9 +41,8 @@ app.use(passport.session());
 
 app.use("/", homepageRouter);
 
-app.use("/", (req, res) => {
-  res.send("I will be the login page.");
-});
+
+//Routing
 
 app.listen(3000, (error) => {
   if (error) {
