@@ -1,14 +1,14 @@
 const { body, validationResult } = require("express-validator");
 
 const createUserValidation = [
-  body("fname").trim().notEmpty().withMessage("First name is required!"),
-  body("lname").trim().notEmpty().withMessage("Last name is required!"),
-  body("email")
+  body("firstname").trim().notEmpty().withMessage("First name is required!"),
+  body("lastname").trim().notEmpty().withMessage("Last name is required!"),
+  body("username")
     .isEmail()
     .normalizeEmail()
     .withMessage("Invalid email address!"),
   body("password")
-    .isLength()
+    .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long!"),
   body("confirm_password").custom((value, { req }) => {
     if (value !== req.body.password) {
