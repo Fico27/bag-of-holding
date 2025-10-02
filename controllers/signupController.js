@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const createNewUser = require("../db/createNewUser");
 
 async function getSignup(req, res) {
-  res.render("signup");
+  res.render("signup", { errors: [], formInfo: {} });
 }
 
 async function postSignup(req, res) {
