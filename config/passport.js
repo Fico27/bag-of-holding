@@ -23,6 +23,7 @@ passport.use(
             }
             return done(null, user);
         } catch(err){
+            console.error(err)
             return done(err)
         }
     })
