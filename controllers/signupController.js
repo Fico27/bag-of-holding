@@ -21,7 +21,8 @@ async function postSignup(req, res) {
   } catch (error) {
     console.error("Signup Error", error);
     res.render("signup", {
-      errors: [{ msg: "Database error", formInfo: req.body }],
+      errors: [{ msg: "Database error" }],
+      formInfo: req.body,
     });
   }
 }
