@@ -18,12 +18,12 @@
     </header>
 
     <main>
-      <form action="/signup">
+      <form action="/signup" method="post">
         <h2>Create an account here!</h2>
 
         <% if( errors && errors.length){ %>
         <ul style="color: red">
-          <% errors.array.forEach(error => { %>
+          <% errors.forEach(error => { %>
           <li><%=error.msg %></li>
           <% }); %>
         </ul>
