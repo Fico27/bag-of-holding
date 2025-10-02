@@ -2,8 +2,8 @@ const express = require("express");
 const path = require("node:path");
 const session = require("express-session");
 const passport = require("./config/passport");
-const {PrismaClient, PrismaClientExtends} = require("@prisma/client");
-const { PrismaSessionStore} = require("@quixo3/prisma-session-store")
+const { PrismaClient, PrismaClientExtends } = require("./generated/prisma");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const app = express();
 const prisma = new PrismaClient();
 require("dotenv").config();
@@ -11,6 +11,8 @@ require("dotenv").config();
 //Import routers
 
 const homepageRouter = require("./routes/homepage");
+const signupRouter = require("./routes/signup");
+const loginRouter = require("./routes/login");
 //
 
 app.set("views", path.join(__dirname, "views"));
@@ -20,17 +22,14 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
-    secret: process.env.secret,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new PrismaSessionStore(
-      prisma,
-      {
-        checkPeriod: 2* 60 * 60 * 1000, // 24 hour session
-        dbRecordIdIsSessionId: true,
-        dbRecordIdFunction: undefined,
-      }
-    )
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 60 * 1000, // 24 hour session
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
   })
 );
 
@@ -40,8 +39,8 @@ app.use(passport.session());
 //Routing
 
 app.use("/", homepageRouter);
-
-
+app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
 //Routing
 
 app.listen(3000, (error) => {
