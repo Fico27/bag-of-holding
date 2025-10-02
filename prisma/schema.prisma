@@ -22,6 +22,8 @@ model User {
   files    File[]
   folders  Folder[]
   sessions Session[]
+  firstname String
+  lastname String
 }
 
 model File {
