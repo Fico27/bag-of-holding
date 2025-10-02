@@ -12,4 +12,4 @@ async function createUser(username, password, firstname, lastname) {
   });
 }
 
-module.exports = createUser;
+module.exports = { createUser };
