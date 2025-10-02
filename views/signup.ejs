@@ -11,22 +11,48 @@
 
       <nav>
         <ul>
-          <li><a href="">Home</a></li>
-          <li><a href="">Log in</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/login">Log in</a></li>
         </ul>
       </nav>
     </header>
 
     <main>
       <form action="/signup">
+        <h2>Create an account here!</h2>
+
+        <% if( errors && errors.length){ %>
+        <ul style="color: red">
+          <% errors.array.forEach(error => { %>
+          <li><%=error.msg %></li>
+          <% }); %>
+        </ul>
+
+        <% } %>
+
         <label for="firstname">First name</label>
-        <input type="text" name="fname" id="fname" />
+        <input
+          type="text"
+          name="firstname"
+          id="firstname"
+          value=" <%= formInfo.firstname || '' %>"
+        />
 
         <label for="lastname">Last name</label>
-        <input type="text" name="lname" id="lname" />
+        <input
+          type="text"
+          name="lastname"
+          id="lastname"
+          value="<%= formInfo.lastname || '' %>"
+        />
 
         <label for="username">Email:</label>
-        <input type="email" id="username" name="username" />
+        <input
+          type="email"
+          id="username"
+          name="username"
+          value="<%= formInfo.username || '' %>"
+        />
 
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" />
