@@ -1,9 +1,7 @@
- const {Router} = require("express");
- const signupRouter = Router();
+const { Router } = require("express");
+const signupRouter = Router();
+const signupController = require("../controllers/signupController");
 
+signupRouter.get("/", signupController.getSignup);
 
- signupRouter.get("/", )
-
- module.exports = {
-    signupRouter
- }
+module.exports = signupRouter;
