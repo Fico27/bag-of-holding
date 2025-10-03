@@ -1,7 +1,7 @@
 const passport = require("passport");
 
 async function getLogin(req, res) {
-  res.render("login", { errors: [] });
+  res.render("login", { errors: [], formInfo: {} });
 }
 
 async function postLogin(req, res, next) {
@@ -10,6 +10,7 @@ async function postLogin(req, res, next) {
     if (!user) {
       return res.status(401).render("login", {
         errors: [{ msg: info?.message || "Invalid username/password" }],
+        formInfo: req.body,
       });
     }
     req.logIn(user, (err) => {

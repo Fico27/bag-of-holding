@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const createNewUser = require("../db/createNewUser");
+const { createUser } = require("../db/createNewUser");
 
 async function getSignup(req, res) {
   res.render("signup", { errors: [], formInfo: {} });
@@ -10,12 +10,7 @@ async function postSignup(req, res) {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await createNewUser.createUser(
-      username,
-      hashedPassword,
-      firstname,
-      lastname
-    );
+    await createUser(username, hashedPassword, firstname, lastname);
 
     res.redirect("/login");
   } catch (error) {
