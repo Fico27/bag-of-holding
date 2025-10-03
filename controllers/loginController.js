@@ -1,7 +1,7 @@
 const passport = require("passport");
 
 async function getLogin(req, res) {
-  res.render("login");
+  res.render("login", { errors: [] });
 }
 
 async function postLogin(req, res, next) {
