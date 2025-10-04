@@ -14,6 +14,7 @@ const homepageRouter = require("./routes/homepage");
 const signupRouter = require("./routes/signup");
 const loginRouter = require("./routes/login");
 const dashboardRouter = require("./routes/dashboard");
+const logoutRouter = require("./routes/logout");
 //
 
 app.set("views", path.join(__dirname, "views"));
@@ -43,6 +44,7 @@ app.use("/", homepageRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
+app.use("/logout", logoutRouter);
 //Routing
 
 app.listen(3000, (error) => {

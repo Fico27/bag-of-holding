@@ -12,7 +12,23 @@
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/logout">Log out</a></li>
+          <!-- <li><a href="/logout">Log out</a></li> -->
+          <li>
+            <form action="/logout" method="post">
+              <button
+                type="submit"
+                style="
+                  background: none;
+                  border: none;
+                  color: blue;
+                  text-decoration: underline;
+                  cursor: pointer;
+                "
+              >
+                Log out
+              </button>
+            </form>
+          </li>
         </ul>
       </nav>
     </header>
