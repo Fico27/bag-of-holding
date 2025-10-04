@@ -43,7 +43,7 @@
         </div>
       </section>
       <section class="items-container">
-        <% if(!items){ %>
+        <% if(!items || items.length === 0){ %>
         <div class="">
           <h3>You current have no files or folders!</h3>
         </div>
@@ -58,9 +58,9 @@
           <tbody>
             <%items.forEach( (item) => { %>
             <tr>
-              <td>item.name</td>
-              <td>item.uploadTime</td>
-              <td>item.size</td>
+              <td><%=item.name%></td>
+              <td><%=item.uploadTime%></td>
+              <td><%=item.size%></td>
               <td><button>Share</button></td>
             </tr>
 
