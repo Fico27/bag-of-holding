@@ -12,9 +12,48 @@
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/login">Log in</a></li>
+          <li><a href="/logout">Log out</a></li>
         </ul>
       </nav>
     </header>
+
+    <main>
+      <section class="main-header">
+        <h2>Welcome, <%=user.firstname %></h2>
+
+        <div class="create-controls">
+          <button>Create Folder</button>
+          <button>Upload File</button>
+        </div>
+      </section>
+      <section class="items-container">
+        <% if(!items){ %>
+        <div class="">
+          <h3>You current have no files or folders!</h3>
+        </div>
+        <%} else {%>
+        <table>
+          <thead>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Date Created</th>
+            <th>Share</th>
+          </thead>
+          <tbody>
+            <%items.forEach(item => { %>
+            <tr>
+              <td>item.name</td>
+              <td>item.uploadTime</td>
+              <td>item.size</td>
+              <td><button>Share</button></td>
+            </tr>
+
+            <% }) %>
+          </tbody>
+        </table>
+
+        <% }%>
+      </section>
+    </main>
   </body>
 </html>
