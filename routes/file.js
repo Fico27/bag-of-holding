@@ -1,14 +1,21 @@
-const { createClient } = require("@supabase/supabase-js");
-
 const { Router } = require("express");
 const fileRouter = Router();
 const isAuth = require("../middleware/authentication");
 require("dotenv").config();
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
 
-fileRouter.post("/upload", isAuth);
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+fileRouter.post("/upload", isAuth, upload.single("file"));
 
 module.exports = fileRouter;
