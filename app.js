@@ -45,6 +45,10 @@ app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/logout", logoutRouter);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
 //Routing
 
 app.listen(3000, (error) => {
@@ -52,4 +56,12 @@ app.listen(3000, (error) => {
     throw error;
   }
   console.log("Listening on port 3000!");
+});
+
+// Clean up and disconnect
+process.on("SIGINT", async () => {
+  console.log("Shutting down server...");
+  await prisma.$disconnect();
+  console.log("Disconnected");
+  process.exit();
 });
