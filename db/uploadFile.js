@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 async function uploadToDb({ userId, name, size, url, storageKey = null }) {
   try {
-    await prisma.file.create({
+    return await prisma.file.create({
       data: {
         name,
         size,

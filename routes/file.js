@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const fileRouter = Router();
-const isAuth = require("../middleware/authentication");
+const { isAuth } = require("../middleware/authentication");
 require("dotenv").config();
 const multer = require("multer");
 const fileController = require("../controllers/fileController");
@@ -23,7 +23,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fieldSize: 5 * 1024 * 1024 },
+  limits: { filedSize: 5 * 1024 * 1024 },
   fileFilter,
 });
 

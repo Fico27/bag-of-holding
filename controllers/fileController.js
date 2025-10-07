@@ -1,13 +1,11 @@
-const path = require("node:path");
 const { supabase } = require("../db/supabase");
 const { uploadToDb } = require("../db/uploadFile");
-const { name } = require("ejs");
-const { serialize } = require("node:v8");
 
 const BUCKET = process.env.SUPABASE_BUCKET;
 
 async function uploadFile(req, res) {
   try {
+    const user = req.user;
     const { file } = req;
     if (!file) {
       return res.render("dashboard", {
@@ -30,7 +28,7 @@ async function uploadFile(req, res) {
 
     let url = null;
 
-    if (process.env.SUPABASE_BUCKET_Public === "true") {
+    if (process.env.SUPABASE_BUCKET_PUBLIC === "true") {
       const { data } = supabase.storage.from(BUCKET).getPublicUrl(objectPath);
       url = data.publicUrl;
     } else {
