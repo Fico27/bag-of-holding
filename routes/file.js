@@ -27,11 +27,6 @@ const upload = multer({
   fileFilter,
 });
 
-fileRouter.post(
-  "/upload",
-  isAuth,
-  upload.single("file"),
-  fileController.uploadFile
-);
+fileRouter.post("/", isAuth, upload.single("file"), fileController.uploadFile);
 
 module.exports = fileRouter;
