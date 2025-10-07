@@ -2,8 +2,8 @@ const { Router } = require("express");
 const fileRouter = Router();
 const isAuth = require("../middleware/authentication");
 require("dotenv").config();
-
 const multer = require("multer");
+const fileController = require("../controllers/fileController");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
