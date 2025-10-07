@@ -22,7 +22,6 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
-app.use(express.static("uploads"));
 app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
@@ -47,7 +46,7 @@ app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/logout", logoutRouter);
-app.use("/upload");
+app.use("/files", fileRouter);
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

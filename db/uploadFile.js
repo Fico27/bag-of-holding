@@ -9,6 +9,7 @@ async function uploadToDb({ userId, name, size, url, storageKey = null }) {
         size,
         url,
         user: { connect: { id: userId } },
+        storageKey,
       },
     });
   } catch (error) {
