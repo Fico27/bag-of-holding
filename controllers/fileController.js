@@ -1,13 +1,10 @@
-const fs = require("node:fs");
-const { PrismaClient } = require("../generated/prisma");
-const { createClient } = require("@supabase/supabase-js");
+const path = require("node:path");
+const { supabase } = require("../db/supabase");
 const { uploadToDb } = require("../db/uploadFile");
+const { name } = require("ejs");
+const { serialize } = require("node:v8");
 
-const prisma = new PrismaClient();
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
+const BUCKET = process.env.SUPABASE_BUCKET;
 
 async function uploadFile(req, res) {
   try {
@@ -20,9 +17,40 @@ async function uploadFile(req, res) {
       });
     }
 
-    await uploadToDb();
+    const objectPath = `${user.id}/${Date.now()}-${file.originalname}`;
 
-    res.redirect("/dashboard");
+    const { error: upErr } = await supabase.storage
+      .from(BUCKET)
+      .upload(objectPath, file.buffer, {
+        contentType: file.mimetype,
+        upsert: false,
+      });
+
+    if (upErr) throw upErr;
+
+    let url = null;
+
+    if (process.env.SUPABASE_BUCKET_Public === "true") {
+      const { data } = supabase.storage.from(BUCKET).getPublicUrl(objectPath);
+      url = data.publicUrl;
+    } else {
+      const { data, error: signErr } = await supabase.storage
+        .from(BUCKET)
+        .createSignedUrl(objectPath, 60 * 60);
+
+      if (signErr) throw signErr;
+      url = data.signedUrl;
+    }
+
+    await uploadToDb({
+      userId: user.id,
+      name: file.originalname,
+      size: file.size,
+      url,
+      storageKey: objectPath,
+    });
+
+    return res.redirect("/dashboard");
   } catch (error) {
     console.error("Upload Error", error);
     res.render("dashboard", {
