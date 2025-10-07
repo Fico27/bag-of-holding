@@ -14,7 +14,27 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "application/pdf",
+    "text/plain",
+  ];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      new Error("Invalid file type. Only JPEG, PNG, PDF, and TXT are allowed.")
+    );
+  }
+};
+
+const upload = multer({
+  storage,
+  limits: { fieldSize: 5 * 1024 * 1024 },
+  fileFilter,
+});
 
 fileRouter.post("/upload", isAuth, upload.single("file"));
 

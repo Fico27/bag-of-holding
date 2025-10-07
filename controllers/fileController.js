@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const { PrismaClient } = require("../generated/prisma");
 const { createClient } = require("@supabase/supabase-js");
+const { uploadToDb } = require("../db/uploadFile");
 
 const prisma = new PrismaClient();
 const supabase = createClient(
@@ -15,9 +16,12 @@ async function uploadFile(req, res) {
       return res.render("dashboard", {
         user: req.user,
         items: [],
-        errors: [{ msg: "No file uploaded" }],
+        errors: [{ msg: "No file upload" }],
       });
     }
+
+    await uploadToDb();
+
     res.redirect("/dashboard");
   } catch (error) {
     console.error("Upload Error", error);
