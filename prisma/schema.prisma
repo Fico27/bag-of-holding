@@ -36,6 +36,7 @@ model File {
   user       User     @relation(fields: [userId], references: [id])
   folderId   Int?
   folder     Folder?  @relation(fields: [folderId], references: [id])
+  storageKey String?
 }
 
 model Folder {
