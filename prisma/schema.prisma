@@ -50,7 +50,7 @@ model Folder {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(cuid())
   sid       String   @unique
   data      String   @db.Text
   expiresAt DateTime

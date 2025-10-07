@@ -30,8 +30,8 @@ app.use(
     saveUninitialized: false,
     store: new PrismaSessionStore(prisma, {
       checkPeriod: 24 * 60 * 60 * 1000, // 24 hour session
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
+      // dbRecordIdIsSessionId: true,
+      // dbRecordIdFunction: undefined,
     }),
   })
 );
