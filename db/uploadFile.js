@@ -1,19 +1,15 @@
 const { PrismaClient } = require("../generated/prisma");
-
 const prisma = new PrismaClient();
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
 
-async function uploadToDb() {
+async function uploadToDb({ userId, name, size, url, storageKey = null }) {
   try {
     await prisma.file.create({
-      data: file.originalname,
-      size: file.size,
-      userId: req.user.id,
-      url: `/uploads/${file.filename}`,
-      folderId: null,
+      data: {
+        name,
+        size,
+        url,
+        user: { connect: { id: userId } },
+      },
     });
   } catch (error) {
     throw error;
