@@ -49,7 +49,17 @@
         </div>
       </section>
       <section class="items-container">
-        <% if(!items || items.length === 0){ %>
+        <div class="errors">
+          <% if (typeof errors !== 'undefined' && errors.length) { %>
+          <ul style="color: red">
+            <% errors.forEach(e => { %>
+            <li><%= e.msg %></li>
+            <% }) %>
+          </ul>
+          <% } %>
+        </div>
+
+        <% if(!files || files.length === 0){ %>
         <div class="">
           <h3>You current have no files or folders!</h3>
         </div>
@@ -59,14 +69,16 @@
             <th>Name</th>
             <th>Size</th>
             <th>Date Created</th>
+            <th>Download</th>
             <th>Share</th>
           </thead>
           <tbody>
-            <%items.forEach( (item) => { %>
+            <%files.forEach( (file) => { %>
             <tr>
-              <td><%=item.name%></td>
-              <td><%=item.size%></td>
-              <td><%=item.uploadTime%></td>
+              <td><%=file.name%></td>
+              <td><%=file.size%></td>
+              <td><%=file.uploadTime.toLocaleString()%></td>
+              <td><a href="/files/<%= file.id %>/download">Download</a></td>
               <td><button>Share</button></td>
             </tr>
 
