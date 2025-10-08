@@ -6,7 +6,7 @@ async function getDashboard(req, res) {
     const user = req.user;
     const [folders, files] = await Promise.all([
       getRootFolders(user.id),
-      getFilesByUser,
+      getFilesByUser(user.id),
     ]);
 
     const items = [
@@ -15,7 +15,7 @@ async function getDashboard(req, res) {
         id: folder.id,
         name: folder.name,
         size: null,
-        date: files.createAt,
+        date: folder.createdAt,
       })),
       ...files.map((file) => ({
         type: "file",
@@ -26,7 +26,7 @@ async function getDashboard(req, res) {
       })),
     ];
 
-    items.sort((a, b) => a.type.localCompare(b.type));
+    items.sort((a, b) => b.type.localeCompare(a.type));
 
     res.render("dashboard", { user, items, errors: [] });
   } catch (error) {

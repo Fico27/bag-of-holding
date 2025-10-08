@@ -2,7 +2,7 @@ const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 async function createFolder(userId, name) {
-  return Prisma.folder.create({
+  return prisma.folder.create({
     data: {
       name,
       user: {

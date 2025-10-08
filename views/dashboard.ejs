@@ -59,29 +59,42 @@
           <% } %>
         </div>
 
-        <% if(!files || files.length === 0){ %>
+        <% if(!items || items.length === 0){ %>
         <div class="">
           <h3>You current have no files or folders!</h3>
         </div>
         <%} else {%>
         <table>
           <thead>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Date Created</th>
-            <th>Download</th>
-            <th>Share</th>
+            <tr>
+              <th>Name</th>
+              <th>Size</th>
+              <th>Date Created</th>
+              <th>Download</th>
+              <th>Share</th>
+            </tr>
           </thead>
           <tbody>
-            <%files.forEach( (file) => { %>
+            <% items.forEach(item => { %>
             <tr>
-              <td><%=file.name%></td>
-              <td><%=file.size%></td>
-              <td><%=file.uploadTime.toLocaleString()%></td>
-              <td><a href="/files/<%= file.id %>/download">Download</a></td>
+              <td>
+                <% if (item.type === 'folder') { %>
+                <a href="/dashboard?folderId=<%= item.id %>"
+                  >📁 <%= item.name %></a
+                >
+                <% } else { %> 📄 <%= item.name %> <% } %>
+              </td>
+              <td><%= item.type === 'file' ? item.size : '-' %></td>
+              <td><%= item.date.toLocaleString() %></td>
+              <td>
+                <% if (item.type === 'folder') { %>
+                <a href="/dashboard?folderId=<%= item.id %>">Open</a>
+                <% } else { %>
+                <a href="/files/<%= item.id %>/download">Download</a>
+                <% } %>
+              </td>
               <td><button>Share</button></td>
             </tr>
-
             <% }) %>
           </tbody>
         </table>
