@@ -16,6 +16,7 @@ const loginRouter = require("./routes/login");
 const dashboardRouter = require("./routes/dashboard");
 const logoutRouter = require("./routes/logout");
 const fileRouter = require("./routes/file");
+const folderRouter = require("./routes/folderRouter");
 //
 
 app.set("views", path.join(__dirname, "views"));
@@ -47,6 +48,7 @@ app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/logout", logoutRouter);
 app.use("/files", fileRouter);
+app.use("/folders", folderRouter);
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

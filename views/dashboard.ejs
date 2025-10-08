@@ -38,8 +38,9 @@
         <h2>Welcome, <%=user.firstname %></h2>
 
         <div class="create-controls">
-          <form action="/upload">
-            <button>Create Folder</button>
+          <form action="/folders" method="post">
+            <input type="text" name="name" required />
+            <button type="submit">Create Folder</button>
           </form>
 
           <form action="/files" method="post" enctype="multipart/form-data">
