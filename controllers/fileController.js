@@ -11,14 +11,15 @@ async function uploadFile(req, res) {
   try {
     if (!file) {
       return res.render("dashboard", {
-        user: req.user,
+        user,
         items: [],
+        currentFolderId,
         errors: [{ msg: "No file upload" }],
       });
     }
 
     if (folderId !== null) {
-      const parent = await ownerFolderCheck();
+      const parent = await ownerFolderCheck(folderId, user.id);
       if (!parent) {
         return res.status(404).render("dashboard", {
           user,

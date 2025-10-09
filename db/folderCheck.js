@@ -9,6 +9,7 @@ async function ownerParentCheck(parentId, userId) {
 }
 
 async function ownerFolderCheck(folderId, userId) {
+  if (folderId == null) return true;
   return await prisma.folder.findFirst({
     where: { id: folderId, userId },
     select: { id: true },
