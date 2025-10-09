@@ -1,5 +1,5 @@
 const { createFolder } = require("../db/createfolder");
-const { ownerCheck } = require("../db/folderCheck");
+const { ownerParentCheck } = require("../db/folderCheck");
 
 async function postCreateFolder(req, res) {
   const user = req.user;
@@ -27,7 +27,7 @@ async function postCreateFolder(req, res) {
     }
 
     if (parentId !== null) {
-      const parent = await ownerCheck(parentId, user.id);
+      const parent = await ownerParentCheck(parentId, user.id);
       if (!parent) {
         return res.status(404).render("dashboard", {
           user,

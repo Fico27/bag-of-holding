@@ -1,18 +1,32 @@
 const { supabase } = require("../db/supabase");
 const { uploadToDb } = require("../db/uploadFile");
+const { ownerFolderCheck } = require("../db/folderCheck");
 
 const BUCKET = process.env.SUPABASE_BUCKET;
 
 async function uploadFile(req, res) {
+  const folderId = req.body.folderId ? Number(req.body.folderId) : null;
+  const user = req.user;
+  const { file } = req;
   try {
-    const user = req.user;
-    const { file } = req;
     if (!file) {
       return res.render("dashboard", {
         user: req.user,
         items: [],
         errors: [{ msg: "No file upload" }],
       });
+    }
+
+    if (folderId !== null) {
+      const parent = await ownerFolderCheck();
+      if (!parent) {
+        return res.status(404).render("dashboard", {
+          user,
+          items: [],
+          currentFolderId: null,
+          errors: [{ msg: "Destination folder not found." }],
+        });
+      }
     }
 
     const objectPath = `${user.id}/${Date.now()}-${file.originalname}`;
@@ -46,14 +60,18 @@ async function uploadFile(req, res) {
       size: file.size,
       url,
       storageKey: objectPath,
+      folderId,
     });
 
-    return res.redirect("/dashboard");
+    return res.redirect(
+      folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"
+    );
   } catch (error) {
     console.error("Upload Error", error);
     res.render("dashboard", {
-      user: req.user,
+      user,
       items: [],
+      currentFolderId: folderId,
       errors: [{ msg: "File upload failed." }],
     });
   }
