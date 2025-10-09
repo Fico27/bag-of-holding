@@ -5,10 +5,8 @@ async function createFolder(userId, name, parentId = null) {
   return prisma.folder.create({
     data: {
       name,
-      parentId,
-      user: {
-        connect: { id: userId },
-      },
+      user: { connect: { id: userId } },
+      ...(parentId !== null ? { parent: { connect: { id: parentId } } } : {}),
     },
   });
 }

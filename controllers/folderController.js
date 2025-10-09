@@ -43,7 +43,7 @@ async function postCreateFolder(req, res) {
     res.redirect(parentId ? `/dashboard?folderId=${parentId}` : "/dashboard");
   } catch (error) {
     const msg =
-      err?.code === "P2002"
+      error?.code === "P2002"
         ? "Folder already exists."
         : "Could not create folder.";
     console.error("Create folder errro:", error);
