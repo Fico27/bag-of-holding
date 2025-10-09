@@ -62,7 +62,7 @@ app.listen(3000, (error) => {
   console.log("Listening on port 3000!");
 });
 
-// Clean up and disconnect
+// Clean up and disconnect prisma
 process.on("SIGINT", async () => {
   console.log("Shutting down server...");
   await prisma.$disconnect();

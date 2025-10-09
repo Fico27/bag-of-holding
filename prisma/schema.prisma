@@ -47,6 +47,9 @@ model Folder {
   files      File[]
   createdAt  DateTime    @default(now())
   shareLinks ShareLink[]
+  parentId Int?
+  parent Folder? @relation("FolderToFolder", fields: [parentId], references: [id])
+  children Folder[] @relation("FolderToFolder")
 }
 
 model Session {
