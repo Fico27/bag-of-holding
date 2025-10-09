@@ -39,6 +39,12 @@
 
         <div class="create-controls">
           <form action="/folders" method="post">
+            <input
+              type="hidden"
+              name="parentId"
+              value=" <%= currentFolderId ||
+            ''  %>"
+            />
             <input type="text" name="name" required />
             <button type="submit">Create Folder</button>
           </form>
