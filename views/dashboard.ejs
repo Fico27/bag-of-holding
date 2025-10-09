@@ -50,6 +50,11 @@
           </form>
 
           <form action="/files" method="post" enctype="multipart/form-data">
+            <input
+              type="hidden"
+              name="folderId"
+              value="<%=currentFolderId || '' %>"
+            />
             <input type="file" name="file" required />
             <button>Upload File</button>
           </form>
