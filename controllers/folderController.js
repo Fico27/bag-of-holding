@@ -1,14 +1,18 @@
 const { createFolder } = require("../db/createfolder");
+const { ownerCheck } = require("../db/folderCheck");
 
 async function postCreateFolder(req, res) {
   const user = req.user;
   const name = req.body.name.trim();
+  // Get current parentId via create folder form.
+  const parentId = req.body.parentId ? Number(req.body.parentId) : null;
 
   try {
     if (!name) {
       return res.status(400).render("dashboard", {
         user,
         items: [],
+        currentFolderId: parentId,
         errors: [{ msg: "Folder name is required" }],
       });
     }
@@ -17,13 +21,26 @@ async function postCreateFolder(req, res) {
       return res.status(400).render("dashboard", {
         user,
         items: [],
+        currentFolderId: parentId,
         errors: [{ msg: "Folder name cannot contain slashes." }],
       });
     }
 
-    await createFolder(user.id, name);
+    if (parentId !== null) {
+      const parent = await ownerCheck(parentId, user.id);
+      if (!parent) {
+        return res.status(404).render("dashboard", {
+          user,
+          items: [],
+          currentFolderId: null,
+          errors: [{ msg: "Parent folder not found" }],
+        });
+      }
+    }
 
-    res.redirect("/dashboard");
+    await createFolder(user.id, name, parentId);
+
+    res.redirect(parentId ? `/dashboard?folderId=${parentId}` : "/dashboard");
   } catch (error) {
     const msg =
       err?.code === "P2002"
@@ -33,6 +50,7 @@ async function postCreateFolder(req, res) {
     return res.status(500).render("dashboard", {
       user,
       items: [],
+      currentFolderId: parentId,
       errors: [{ msg }],
     });
   }

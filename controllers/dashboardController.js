@@ -3,6 +3,7 @@ const { getFoldersByParent } = require("../db/getfolders");
 
 async function getDashboard(req, res) {
   const user = req.user;
+  // get current folderid via query
   const folderId = req.query.folderId ? Number(req.query.folderId) : null;
 
   try {
