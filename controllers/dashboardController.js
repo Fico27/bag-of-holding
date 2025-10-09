@@ -1,12 +1,14 @@
-const { getFilesByUser } = require("../db/getfiles");
-const { getRootFolders } = require("../db/getfolders");
+const { getFilesByFolder } = require("../db/getfiles");
+const { getFoldersByParent } = require("../db/getfolders");
 
 async function getDashboard(req, res) {
+  const user = req.user;
+  const folderId = req.query.folderId ? Number(req.query.folderId) : null;
+
   try {
-    const user = req.user;
     const [folders, files] = await Promise.all([
-      getRootFolders(user.id),
-      getFilesByUser(user.id),
+      getFoldersByParent(user.id, folderId),
+      getFilesByFolder(user.id, folderId),
     ]);
 
     const items = [
@@ -28,12 +30,18 @@ async function getDashboard(req, res) {
 
     items.sort((a, b) => b.type.localeCompare(a.type));
 
-    res.render("dashboard", { user, items, errors: [] });
+    res.render("dashboard", {
+      user,
+      items,
+      currentFolderId: folderId,
+      errors: [],
+    });
   } catch (error) {
     console.error(error);
     res.render("dashboard", {
       user: req.user,
       items: [],
+      currentFolderId: folderId,
       errors: [{ msg: "failed to load files." }],
     });
   }
