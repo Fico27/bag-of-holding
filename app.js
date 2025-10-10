@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("node:path");
 const session = require("express-session");
@@ -6,7 +7,6 @@ const { PrismaClient, PrismaClientExtends } = require("./generated/prisma");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const app = express();
 const prisma = new PrismaClient();
-require("dotenv").config();
 
 //Import routers
 

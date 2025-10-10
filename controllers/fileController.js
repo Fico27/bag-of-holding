@@ -1,10 +1,10 @@
+require("dotenv").config();
 const { supabase } = require("../db/supabase");
 const { uploadToDb } = require("../db/uploadFile");
 const { ownerFolderCheck } = require("../db/folderCheck");
 const dbDownloadFile = require("../db/downloadFile");
-require("dotenv").config();
 
-const BUCKET = process.env.SUPABASE_BUCKET;
+const BUCKET = process.env.SUPABASE_BUCKET || "";
 
 async function uploadFile(req, res) {
   const folderId = req.body.folderId ? Number(req.body.folderId) : null;
@@ -84,6 +84,7 @@ async function downloadFile(req, res) {
   try {
     const user = req.user;
     const id = Number(req.params.id);
+    if (Number.isNaN(id)) return res.status(400).send("Bad file id");
 
     const file = await dbDownloadFile.findDownloadFile(id, user.id);
 
