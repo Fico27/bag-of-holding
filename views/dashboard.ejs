@@ -42,7 +42,7 @@
             <input
               type="hidden"
               name="parentId"
-              value=" <%= currentFolderId ||
+              value="<%= currentFolderId ||
             ''  %>"
             />
             <input type="text" name="name" required />
@@ -100,7 +100,7 @@
               <td><%= item.date.toLocaleString() %></td>
               <td>
                 <% if (item.type === 'folder') { %>
-                <a href="/dashboard?folderId=<%= item.id %>">Open</a>
+                <a href="/folders/<%= item.id %>/download">Download</a>
                 <% } else { %>
                 <a href="/files/<%= item.id %>/download">Download</a>
                 <% } %>
