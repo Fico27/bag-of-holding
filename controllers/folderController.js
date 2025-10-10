@@ -4,6 +4,8 @@ const dbDownloadFolder = require("../db/downloadFolder");
 const archiver = require("archiver");
 const { supabase } = require("../db/supabase");
 
+const BUCKET = process.env.SUPABASE_BUCKET || "";
+
 async function postCreateFolder(req, res) {
   const user = req.user;
   const name = req.body.name.trim();
