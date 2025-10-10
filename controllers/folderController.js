@@ -1,5 +1,6 @@
 const { createFolder } = require("../db/createfolder");
 const { ownerParentCheck } = require("../db/folderCheck");
+const dbDownloadFolder = require("../db/downloadFolder");
 
 async function postCreateFolder(req, res) {
   const user = req.user;
@@ -56,6 +57,34 @@ async function postCreateFolder(req, res) {
   }
 }
 
+async function collectFileRecursivly({ userId, folderId, pathParts = [] }) {
+  const folder = await dbDownloadFolder.getDownloadFolder();
+
+  if (!folder) return [];
+
+  const thisPath = [...pathParts, folder.name];
+
+  const files = dbDownloadFolder.getFilesInFolder();
+
+  const entries = (await files).map((file) => ({
+    storageKey: file.storageKey,
+    zipPath: [...thisPath, file.name].join("/"),
+  }));
+
+  const childFolder = dbDownloadFolder.getChildFolder();
+
+  for (const child of childFolder) {
+    const childEntries = await collectFileRecursivly({
+      userId,
+      folderId: child.id,
+      pathParts: thisPath,
+    });
+    entries.push(...childEntries);
+  }
+  return entries;
+}
+
 module.exports = {
   postCreateFolder,
+  collectFileRecursivly,
 };

@@ -5,4 +5,7 @@ const { isAuth } = require("../middleware/authentication");
 
 folderRouter.post("/", isAuth, folderController.postCreateFolder);
 
+// add folderController for downloads
+folderRouter.get("/:id/download", isAuth);
+
 module.exports = folderRouter;
