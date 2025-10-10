@@ -1,6 +1,8 @@
 const { createFolder } = require("../db/createfolder");
 const { ownerParentCheck } = require("../db/folderCheck");
 const dbDownloadFolder = require("../db/downloadFolder");
+const archiver = require("archiver");
+const { supabase } = require("../db/supabase");
 
 async function postCreateFolder(req, res) {
   const user = req.user;
@@ -84,7 +86,67 @@ async function collectFileRecursivly({ userId, folderId, pathParts = [] }) {
   return entries;
 }
 
+async function downloadFolder(req, res) {
+  try {
+    const user = req.user;
+    const folderId = Number(req.params.id);
+
+    const folder = dbDownloadFolder.getDownloadFolder();
+
+    if (!folder) {
+      return res.status(404).send("Folder not found");
+    }
+
+    const entries = await collectFileRecursivly({
+      userId: user.id,
+      folderId: folder.id,
+      pathParts: [],
+    });
+
+    const zipName = `${folder.name}.zip`;
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${encodeURIComponent(zipName)}`
+    );
+
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    archive.on("error", (error) => {
+      console.error("Archiver error:", error);
+      try {
+        res.status(500).end("Archive error");
+      } catch (err) {}
+    });
+
+    archive.pipe(res);
+
+    for (const entry of entries) {
+      //skip over bad files
+      if (!entry.storageKey) continue;
+
+      const { data, error } = await supabase.storage
+        .from(BUCKET)
+        .download(entry.storageKey);
+
+      if (error) {
+        console.warn("Skipped file:", entry.storageKey, error.message);
+        continue;
+      }
+
+      const buffer = Buffer.from(await data.arrayBuffer());
+
+      archive.append(buffer, { name: entry.zipPath });
+    }
+
+    archive.finalize();
+  } catch (error) {
+    console.error("Download folder error:", error);
+    return res.status(500).send("Could not download folder");
+  }
+}
+
 module.exports = {
   postCreateFolder,
   collectFileRecursivly,
+  downloadFolder,
 };
