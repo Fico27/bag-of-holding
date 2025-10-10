@@ -60,20 +60,20 @@ async function postCreateFolder(req, res) {
 }
 
 async function collectFileRecursivly({ userId, folderId, pathParts = [] }) {
-  const folder = await dbDownloadFolder.getDownloadFolder();
+  const folder = await dbDownloadFolder.getDownloadFolder(folderId, userId);
 
   if (!folder) return [];
 
   const thisPath = [...pathParts, folder.name];
 
-  const files = dbDownloadFolder.getFilesInFolder();
+  const files = dbDownloadFolder.getFilesInFolder(folderId, userId);
 
   const entries = (await files).map((file) => ({
     storageKey: file.storageKey,
     zipPath: [...thisPath, file.name].join("/"),
   }));
 
-  const childFolder = dbDownloadFolder.getChildFolder();
+  const childFolder = dbDownloadFolder.getChildFolder(folderId, userId);
 
   for (const child of childFolder) {
     const childEntries = await collectFileRecursivly({
@@ -91,7 +91,7 @@ async function downloadFolder(req, res) {
     const user = req.user;
     const folderId = Number(req.params.id);
 
-    const folder = dbDownloadFolder.getDownloadFolder();
+    const folder = dbDownloadFolder.getDownloadFolder(folderId, user.id);
 
     if (!folder) {
       return res.status(404).send("Folder not found");

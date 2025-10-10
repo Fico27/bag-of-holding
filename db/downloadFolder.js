@@ -1,7 +1,7 @@
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
-async function getDownloadFolder() {
+async function getDownloadFolder(folderId, userId) {
   return await prisma.folder.findFirst({
     where: {
       id: folderId,
@@ -14,11 +14,11 @@ async function getDownloadFolder() {
   });
 }
 
-async function getFilesInFolder() {
+async function getFilesInFolder(folderId, userId) {
   return await prisma.file.findMany({
     where: {
       userId,
-      folderId: folder.id,
+      folderId,
     },
     select: {
       id: true,
@@ -29,11 +29,11 @@ async function getFilesInFolder() {
   });
 }
 
-async function getChildFolder() {
+async function getChildFolder(parentId, userId) {
   await prisma.folder.findMany({
     where: {
       userId,
-      parentId: folder.id,
+      parentId,
     },
     select: {
       id: true,
