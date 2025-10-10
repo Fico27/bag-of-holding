@@ -30,7 +30,7 @@ async function getFilesInFolder(folderId, userId) {
 }
 
 async function getChildFolder(parentId, userId) {
-  await prisma.folder.findMany({
+  return await prisma.folder.findMany({
     where: {
       userId,
       parentId,
