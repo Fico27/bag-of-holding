@@ -1,5 +1,6 @@
 const { getFilesByFolder } = require("../db/getfiles");
 const { getFoldersByParent } = require("../db/getfolders");
+const { getOwnedFolder, getFolderTrail } = require("../db/breadcrumb");
 
 async function getDashboard(req, res) {
   const user = req.user;
@@ -7,9 +8,12 @@ async function getDashboard(req, res) {
   const folderId = req.query.folderId ? Number(req.query.folderId) : null;
 
   try {
-    const [folders, files] = await Promise.all([
+    const [folders, files, breadcrumbs] = await Promise.all([
       getFoldersByParent(user.id, folderId),
       getFilesByFolder(user.id, folderId),
+      folderId !== null
+        ? getFolderTrail(user.id, folderId)
+        : Promise.resolve([]),
     ]);
 
     const items = [
@@ -35,6 +39,7 @@ async function getDashboard(req, res) {
       user,
       items,
       currentFolderId: folderId,
+      breadcrumbs,
       errors: [],
     });
   } catch (error) {
@@ -43,6 +48,7 @@ async function getDashboard(req, res) {
       user: req.user,
       items: [],
       currentFolderId: folderId,
+      breadcrumbs: [],
       errors: [{ msg: "failed to load files." }],
     });
   }
