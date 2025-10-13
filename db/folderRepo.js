@@ -51,7 +51,7 @@ async function collectItemsInFolder(userId, rootFolderId) {
     const filesInFolder = await getFilesInFolder(userId, folderId);
     files.push(...filesInFolder);
 
-    const children = await getChildFolder(userId, folderId);
+    const children = await getChildFolder(folderId, userId);
     for (const child of children) {
       await collectFiles(child.id);
     }
@@ -78,7 +78,7 @@ async function deleteFolderCascade(files, folderIds) {
         },
       },
     }),
-    await prisma.folder.deleteMany({
+    prisma.folder.deleteMany({
       where: {
         id: {
           in: folderIds,

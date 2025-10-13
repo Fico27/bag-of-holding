@@ -110,7 +110,7 @@ async function downloadFolder(req, res) {
     res.setHeader("Content-Type", "application/zip");
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="${encodeURIComponent(zipName)}`
+      `attachment; filename="${encodeURIComponent(zipName)}"`
     );
 
     const archive = archiver("zip", { zlib: { level: 9 } });
@@ -181,7 +181,7 @@ async function renameFolder(req, res) {
 
 async function deleteFolder(req, res) {
   try {
-    const user = user.id;
+    const user = req.user;
     const id = Number(req.params.id);
 
     const folder = await dbFolderRepo.getOwnedFolder(user.id, id);
