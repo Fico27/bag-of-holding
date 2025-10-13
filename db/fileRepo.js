@@ -4,10 +4,8 @@ const prisma = new PrismaClient();
 async function getOwnedFile(userId, fileId) {
   return prisma.file.findFirst({
     where: {
-      id: {
-        id: fileId,
-        userId,
-      },
+      id: fileId,
+      userId,
     },
     select: {
       id: true,
