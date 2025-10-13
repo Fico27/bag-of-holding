@@ -116,11 +116,19 @@
               <td><%= item.date.toLocaleString() %></td>
               <td>
                 <% if(item.type === 'folder') {%>
-                <form action="/folders/<%=item.id%>/rename" method="post">
+                <form
+                  action="/folders/<%=item.id%>/rename"
+                  method="post"
+                  onsubmit="return renamePrompt(this)"
+                >
                   <button>Rename</button>
                 </form>
                 <%} else {%>
-                <form action="/files/<%=item.id%>/rename" method="post">
+                <form
+                  action="/files/<%=item.id%>/rename"
+                  method="post"
+                  onsubmit="return renamePrompt(this)"
+                >
                   <button>Rename</button>
                 </form>
                 <% }%>
@@ -135,11 +143,19 @@
               <td><button>Share</button></td>
               <td>
                 <% if(item.type === 'folder') {%>
-                <form action="/folders/<%=item.id%>/delete" method="post">
+                <form
+                  action="/folders/<%=item.id%>/delete"
+                  method="post"
+                  onsubmit="return confirmDelete('<%= item.name %>')"
+                >
                   <button>Delete</button>
                 </form>
                 <%} else {%>
-                <form action="/files/<%=item.id%>/delete" method="post">
+                <form
+                  action="/files/<%=item.id%>/delete"
+                  method="post"
+                  onsubmit="return confirmDelete('<%= item.name %>')"
+                >
                   <button>Delete</button>
                 </form>
                 <% }%>
@@ -152,5 +168,22 @@
         <% }%>
       </section>
     </main>
+
+    <script>
+      function confirmDelete(name) {
+        return confirm(`Delete "${name}"? You cannot undo this.`);
+      }
+
+      function renamePrompt(form) {
+        const current = "";
+        const next = prompt("New name:", current);
+
+        if (next && next.trim()) {
+          form.querySelector(('input[name="name"]'.value = next.trim()));
+          return true;
+        }
+        return false;
+      }
+    </script>
   </body>
 </html>
