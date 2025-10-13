@@ -121,6 +121,12 @@
                   method="post"
                   onsubmit="return renamePrompt(this)"
                 >
+                  <input
+                    type="hidden"
+                    name="currentFolderId"
+                    value="<%=currentFolderId ?? ''%>"
+                  />
+                  <input type="hidden" name="name" value="" />
                   <button>Rename</button>
                 </form>
                 <%} else {%>
@@ -129,6 +135,12 @@
                   method="post"
                   onsubmit="return renamePrompt(this)"
                 >
+                  <input
+                    type="hidden"
+                    name="currentFolderId"
+                    value="<%=currentFolderId ?? ''%>"
+                  />
+                  <input type="hidden" name="name" value="" />
                   <button>Rename</button>
                 </form>
                 <% }%>
@@ -179,7 +191,7 @@
         const next = prompt("New name:", current);
 
         if (next && next.trim()) {
-          form.querySelector(('input[name="name"]'.value = next.trim()));
+          form.querySelector('input[name="name"]').value = next.trim();
           return true;
         }
         return false;
