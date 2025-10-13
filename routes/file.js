@@ -29,4 +29,8 @@ const upload = multer({
 
 fileRouter.post("/", isAuth, upload.single("file"), fileController.uploadFile);
 fileRouter.get("/:id/download", isAuth, fileController.downloadFile);
+
+fileRouter.post("/:id/rename", isAuth, fileController.renameFile);
+fileRouter.post("/:id/delete", isAuth, fileController.deleteFile);
+
 module.exports = fileRouter;
