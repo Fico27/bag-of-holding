@@ -95,8 +95,10 @@
               <th>Name</th>
               <th>Size</th>
               <th>Date Created</th>
+              <th>Rename</th>
               <th>Download</th>
               <th>Share</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -107,10 +109,22 @@
                 <a href="/dashboard?folderId=<%= item.id %>"
                   >📁 <%= item.name %></a
                 >
+
                 <% } else { %> 📄 <%= item.name %> <% } %>
               </td>
               <td><%= item.type === 'file' ? item.size : '-' %></td>
               <td><%= item.date.toLocaleString() %></td>
+              <td>
+                <% if(item.type === 'folder') {%>
+                <form action="/folders/<%=item.id%>/rename" method="post">
+                  <button>Rename</button>
+                </form>
+                <%} else {%>
+                <form action="/files/<%=item.id%>/rename" method="post">
+                  <button>Rename</button>
+                </form>
+                <% }%>
+              </td>
               <td>
                 <% if (item.type === 'folder') { %>
                 <a href="/folders/<%= item.id %>/download">Download</a>
@@ -119,6 +133,17 @@
                 <% } %>
               </td>
               <td><button>Share</button></td>
+              <td>
+                <% if(item.type === 'folder') {%>
+                <form action="/folders/<%=item.id%>/delete" method="post">
+                  <button>Delete</button>
+                </form>
+                <%} else {%>
+                <form action="/files/<%=item.id%>/delete" method="post">
+                  <button>Delete</button>
+                </form>
+                <% }%>
+              </td>
             </tr>
             <% }) %>
           </tbody>
