@@ -168,6 +168,11 @@
                   method="post"
                   onsubmit="return confirmDelete('<%= item.name %>')"
                 >
+                  <input
+                    type="hidden"
+                    name="currentFolderId"
+                    id="<%=currentFolderId ?? ''%>"
+                  />
                   <button>Delete</button>
                 </form>
                 <% }%>
