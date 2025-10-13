@@ -3,6 +3,7 @@ const { supabase } = require("../db/supabase");
 const { uploadToDb } = require("../db/uploadFile");
 const { ownerFolderCheck } = require("../db/folderCheck");
 const dbDownloadFile = require("../db/downloadFile");
+const dbFileRepo = require("../db/fileRepo");
 
 const BUCKET = process.env.SUPABASE_BUCKET || "";
 
@@ -110,7 +111,71 @@ async function downloadFile(req, res) {
   }
 }
 
+async function renameFile(req, res) {
+  try {
+    const user = req.user;
+    const id = Number(req.params.id);
+    const currentFolderId = req.body.currentFolderId
+      ? Number(req.body.currentFolderId)
+      : null;
+    const newName = req.body.name;
+
+    if (!newName) {
+      return res
+        .status(400)
+        .redirect(
+          currentFolderId
+            ? `/dashboard?folderId=${currentFolderId}`
+            : "/dashboard"
+        );
+    }
+
+    const file = await dbFileRepo.getOwnedFile(user.id, id);
+    if (!file) return res.status(404).send("File not found!");
+
+    await dbFileRepo.renameFile(user.id, id, newName);
+    return res.redirect(
+      currentFolderId ? `/dashboard?folderId=${currentFolderId}` : "/dashboard"
+    );
+  } catch (error) {
+    console.error("Error renaming file:", error);
+    return res.status(500).send("Could not rename file.");
+  }
+}
+
+async function deleteFile(req, res) {
+  try {
+    const user = req.user;
+    const id = Number(req.params.id);
+    const currentFolderId = req.body.currentFolderId
+      ? Number(req.body.currentFolderId)
+      : null;
+
+    const file = await dbFileRepo.getOwnedFile(user.id, id);
+    if (!file) return res.status(404).send("File not found!");
+
+    if (file.storageKey) {
+      const { error } = await supabase.storage
+        .from(BUCKET)
+        .remove([file.storageKey]);
+
+      if (error) {
+        console.warn("Failed to remove file:", file.storageKey, error.message);
+      }
+    }
+    await dbFileRepo.deleteFile(id, user.id);
+    return res.redirect(
+      currentFolderId ? `/dashboard?folderId=${currentFolderId}` : "/dashboard"
+    );
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    return res.status(500).send("Could not delete file");
+  }
+}
+
 module.exports = {
   uploadFile,
   downloadFile,
+  renameFile,
+  deleteFile,
 };
