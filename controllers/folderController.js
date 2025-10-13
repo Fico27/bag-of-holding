@@ -1,6 +1,7 @@
 const { createFolder } = require("../db/createfolder");
 const { ownerParentCheck } = require("../db/folderCheck");
 const dbDownloadFolder = require("../db/downloadFolder");
+const dbFolderRepo = require("../db/folderRepo");
 const archiver = require("archiver");
 const { supabase } = require("../db/supabase");
 
@@ -147,8 +148,70 @@ async function downloadFolder(req, res) {
   }
 }
 
+async function renameFolder(req, res) {
+  try {
+    const user = req.user;
+    const id = Number(req.params.id);
+    const currentFolderId = req.body.currentFolderId
+      ? Number(req.body.currentFolderId)
+      : null;
+    const newName = req.body.name.trim();
+
+    const folder = await dbFolderRepo.getOwnedFolder(user.id, id);
+
+    if (!folder) return res.status(404).send("Folder not found");
+    if (!newName)
+      return res
+        .status(400)
+        .redirect(
+          currentFolderId
+            ? `/dsahboard?FolderId=${currentFolderId}`
+            : "/dashboard"
+        );
+
+    await dbFolderRepo.renameFolder(user.id, id, newName);
+    return res.redirect(
+      currentFolderId ? `/dashboard?folderId=${currentFolderId}` : "/dashboard"
+    );
+  } catch (error) {
+    console.error("Rename folder error:", error);
+    return res.status(500).send("Could not rename folder.");
+  }
+}
+
+async function deleteFolder(req, res) {
+  try {
+    const user = user.id;
+    const id = Number(req.params.id);
+
+    const folder = await dbFolderRepo.getOwnedFolder(user.id, id);
+    if (!folder) return res.status(404).send("Folder not found");
+
+    const { files, folders } = await dbFolderRepo.collectItemsInFolder(
+      user.id,
+      id
+    );
+
+    const keys = files.map((file) => file.storageKey).filter(Boolean);
+    if (keys.length) {
+      const { error } = await supabase.storage.from(BUCKET).remove(keys);
+      if (error) console.warn("Removal from storage failed:", error.message);
+    }
+    await dbFolderRepo.deleteFolderCascade(files, folders);
+
+    return res.redirect(
+      folder.parentId ? `/dashboard?folderId=${folder.parentId}` : "/dashboard"
+    );
+  } catch (error) {
+    console.error("Delete folder error:", error);
+    return res.status(500).send("Could not delete folder");
+  }
+}
+
 module.exports = {
   postCreateFolder,
   collectFileRecursivly,
   downloadFolder,
+  renameFolder,
+  deleteFolder,
 };
