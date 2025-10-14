@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard-Guest</title>
+  </head>
+  <body>
+    <header>
+      <h1>Drive of Holding</h1>
+
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="main-header">
+        <h2>Welcome, guest %></h2>
+
+        <nav>
+          <%if(currentFolderId !== null) {%>
+
+          <a href="/dashboard">Dashboard/</a>
+          <% if(breadcrumbs && breadcrumbs.length) {%> <%
+          breadcrumbs.forEach((crumb, index) => { %> <% if (index <
+          breadcrumbs.length -1) { %>
+          <a href="/dashboard?folderId=<%=crumb.id%>"><%= crumb.name%>/</a>
+          <% } else {%>
+          <span> Current Folder: <%=crumb.name %></span>
+          <%}%> <% }) %> <% }%> <% } %>
+        </nav>
+      </section>
+      <section class="items-container">
+        <div class="errors">
+          <% if (typeof errors !== 'undefined' && errors.length) { %>
+          <ul style="color: red">
+            <% errors.forEach(e => { %>
+            <li><%= e.msg %></li>
+            <% }) %>
+          </ul>
+          <% } %>
+        </div>
+
+        <% if(!items || items.length === 0){ %>
+        <div class="">
+          <h3>You current have no files or folders!</h3>
+        </div>
+        <%} else {%>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Size</th>
+              <th>Date Created</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% items.forEach(item => { %>
+            <tr>
+              <td>
+                <% if (item.type === 'folder') { %>
+                <a href="/dashboard?folderId=<%= item.id %>"
+                  >📁 <%= item.name %></a
+                >
+
+                <% } else { %> 📄 <%= item.name %> <% } %>
+              </td>
+              <td><%= item.type === 'file' ? fileSize(item.size) : '-' %></td>
+              <td><%= item.date.toLocaleString() %></td>
+              <td>
+                <% if (item.type === 'folder') { %>
+                <a href="/folders/<%= item.id %>/download">Download</a>
+                <% } else { %>
+                <a href="/files/<%= item.id %>/download">Download</a>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+        <% }%>
+      </section>
+    </main>
+  </body>
+</html>
