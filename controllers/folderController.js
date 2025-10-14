@@ -216,6 +216,12 @@ async function postCreateShare(req, res) {
 
   const folder = await dbFolderRepo.getOwnedFolder(user.id, folderId);
   if (!folder) return res.status(404).send("Folder not found");
+
+  const expires = new Date(Date.now() + duration * 3600 * 1000);
+
+  const link = await createShare.createShareLink(folderId, expires);
+
+  // I need to create a view to render for shared links.
 }
 
 module.exports = {
@@ -224,4 +230,5 @@ module.exports = {
   downloadFolder,
   renameFolder,
   deleteFolder,
+  postCreateShare,
 };

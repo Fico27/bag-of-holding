@@ -9,4 +9,6 @@ folderRouter.get("/:id/download", isAuth, folderController.downloadFolder);
 folderRouter.post("/:id/rename", isAuth, folderController.renameFolder);
 folderRouter.post("/:id/delete", isAuth, folderController.deleteFolder);
 
+folderRouter.post("/:id/share", isAuth, folderController.postCreateShare);
+
 module.exports = folderRouter;
