@@ -112,7 +112,7 @@
 
                 <% } else { %> 📄 <%= item.name %> <% } %>
               </td>
-              <td><%= item.type === 'file' ? item.size : '-' %></td>
+              <td><%= item.type === 'file' ? fileSize(item.size) : '-' %></td>
               <td><%= item.date.toLocaleString() %></td>
               <td>
                 <% if(item.type === 'folder') {%>
@@ -186,21 +186,6 @@
       </section>
     </main>
 
-    <script>
-      function confirmDelete(name) {
-        return confirm(`Delete "${name}"? You cannot undo this.`);
-      }
-
-      function renamePrompt(form) {
-        const current = "";
-        const next = prompt("New name:", current);
-
-        if (next && next.trim()) {
-          form.querySelector('input[name="name"]').value = next.trim();
-          return true;
-        }
-        return false;
-      }
-    </script>
+    <script src="/scripts/dashboardScripts.js"></script>
   </body>
 </html>
