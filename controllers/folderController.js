@@ -4,6 +4,7 @@ const dbDownloadFolder = require("../db/downloadFolder");
 const dbFolderRepo = require("../db/folderRepo");
 const archiver = require("archiver");
 const { supabase } = require("../db/supabase");
+const createShare = require("../db/createShare");
 
 const BUCKET = process.env.SUPABASE_BUCKET || "";
 
@@ -206,6 +207,15 @@ async function deleteFolder(req, res) {
     console.error("Delete folder error:", error);
     return res.status(500).send("Could not delete folder");
   }
+}
+
+async function postCreateShare(req, res) {
+  const user = req.user;
+  const folderId = Number(req.params.id);
+  const duration = Number(req.body.durationInHours || 24);
+
+  const folder = await dbFolderRepo.getOwnedFolder(user.id, folderId);
+  if (!folder) return res.status(404).send("Folder not found");
 }
 
 module.exports = {
