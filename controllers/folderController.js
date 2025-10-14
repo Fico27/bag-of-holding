@@ -222,6 +222,11 @@ async function postCreateShare(req, res) {
   const link = await createShare.createShareLink(folderId, expires);
 
   // I need to create a view to render for shared links.
+
+  res.render("share-created", {
+    url: `/shared/${link.id}`,
+    expires: link.expires,
+  });
 }
 
 module.exports = {

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drive of Holding</title>
+  </head>
+  <body>
+    <header>
+      <h1>Drive of Holding</h1>
+
+      <nav>
+        <ul>
+          <li><a href="/dashboard">Dashboard</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h1>Share link created!</h1>
+
+        <p>
+          Anyone with this link can view the folder until it expires. Expires
+          in: <%=expires.toLocalString()%> hours.
+        </p>
+        <div>
+          <input id="shareUrl" value="<%= url %>" readonly />
+          <button
+            onclick="navigator.clipboard.writeText(document.getElementById('shareUrl').value)"
+          >
+            Copy
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
