@@ -8,6 +8,19 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const app = express();
 const prisma = new PrismaClient();
 
+app.locals.fileSize = function (bytes) {
+  const n = Number(bytes);
+  if (!Number.isFinite(n)) return "-";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let i = 0,
+    v = n;
+  while (v >= 1024 && i < units.length - 1) {
+    v /= 1024;
+    i++;
+  }
+  return v.toFixed(v >= 10 || i === 0 ? 0 : 1) + " " + units[i];
+};
+
 //Import routers
 
 const homepageRouter = require("./routes/homepage");
@@ -18,11 +31,12 @@ const logoutRouter = require("./routes/logout");
 const fileRouter = require("./routes/file");
 const folderRouter = require("./routes/folderRouter");
 //
-
+app.use(express.static(path.join("./scripts")));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
