@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const shareRouter = Router();
+const shareController = require("../controllers/shareController");
 
-shareRouter.get("/:id");
+shareRouter.get("/:id", shareController.viewShared);
+shareRouter.get("/:id/files/:fileId/download", shareController.downloadShared);
 
 module.exports = shareRouter;
