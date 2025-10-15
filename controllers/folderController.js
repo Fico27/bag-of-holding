@@ -219,9 +219,7 @@ async function postCreateShare(req, res) {
 
   const expires = new Date(Date.now() + duration * 3600 * 1000);
 
-  const link = await createShare.createShareLink(folderId, expires);
-
-  // I need to create a view to render for shared links.
+  const link = await createShare.createShareLink({ folderId, expires });
 
   res.render("share-created", {
     url: `/shared/${link.id}`,
