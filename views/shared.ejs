@@ -27,8 +27,8 @@
           <% if(breadcrumbs && breadcrumbs.length) {%> <%
           breadcrumbs.forEach((crumb, index) => { %> <% if (index <
           breadcrumbs.length -1) { %>
-          <a href="/shared/<%=linkId%>?folderId=" <%="crumb.id%"
-            >><%= crumb.name%>/</a
+          <a href="/shared/<%=linkId%>?folderId=<%=crumb.id%>"
+            ><%= crumb.name%>/</a
           >
           <% } else {%>
           <span> Current Folder: <%=crumb.name %></span>
