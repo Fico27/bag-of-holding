@@ -97,7 +97,7 @@ async function getFileIfApproved(fileId, mainFolderId) {
 
   //NOTE TO SELF BECAUSE CONFUSING
   // First we verify if the file is included in the shared folder.
-  // Then we verify that the folder is a descendant of the shared folder
+  // Then we verify that file belongs to a subfolder of the shared folder
   while (pointer != null) {
     if (pointer === mainFolderId) {
       return file;
@@ -113,6 +113,30 @@ async function getFileIfApproved(fileId, mainFolderId) {
   return null;
 }
 
+//Check if folders are included in the share
+
+async function isFolderWithinShare(targetFoldId, rootFolderId) {
+  if (targetFoldId === rootFolderId) return true;
+
+  let pointer = await prisma.folder.findUnique({
+    where: {
+      id: targetFoldId,
+    },
+    select: {
+      parentId,
+    },
+  });
+
+  while (pointer && pointer.parentId != null) {
+    if (pointer.parentId === rootFolderId) return true;
+    pointer = await prisma.folder.findUnique({
+      where: { id: pointer.parentId },
+      select: { parentId: true },
+    });
+  }
+  return false;
+}
+
 module.exports = {
   findSharedLink,
   findSharedDownload,
@@ -120,4 +144,5 @@ module.exports = {
   getFilesByFolderPublic,
   getFileIfApproved,
   findPublicFile,
+  isFolderWithinShare,
 };
