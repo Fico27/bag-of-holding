@@ -74,18 +74,28 @@ async function viewShared(req, res) {
 
 async function downloadShared(req, res) {
   const shareId = req.params.id;
-  const fileId = Number(req.params.fileId);
+  const fileId = req.params.fileId ? Number(req.params.fileId) : null;
 
   const link = await sharedDb.findSharedDownload(shareId);
-
   if (!link || link.expires <= new Date()) {
     return res.status(404).send("Link not found or expired");
   }
 
-  const file = await sharedDb.getFileIfApproved(fileId, link.folderId);
-  if (!file)
-    return res.status(404).send("File not found in this shared folder.");
+  let file;
 
+  if (link.fileId) {
+    if (fileId && fileId !== link.fileId) {
+      return res.status(404).send("File not found for this share");
+    }
+    file = await sharedDb.findPublicFile(link.fileId);
+  } else {
+    if (!fileId) return res.status(400).send("Missing file Id");
+    file = await sharedDb.getFileIfApproved(fileId, link.folderId);
+  }
+
+  if (!file) {
+    return res.status(404).send("File not found in this shared folder.");
+  }
   const { data, error } = await supabase.storage
     .from(BUCKET)
     .createSignedUrl(file.storageKey, 60, { download: file.name });
