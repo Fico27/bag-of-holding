@@ -33,4 +33,6 @@ fileRouter.get("/:id/download", isAuth, fileController.downloadFile);
 fileRouter.post("/:id/rename", isAuth, fileController.renameFile);
 fileRouter.post("/:id/delete", isAuth, fileController.deleteFile);
 
+fileRouter.post("/:id/share", isAuth);
+
 module.exports = fileRouter;

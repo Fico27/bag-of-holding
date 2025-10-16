@@ -1,7 +1,7 @@
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
-async function createShareLink({ folderId, expires }) {
+async function createShareLinkForFolder({ folderId, expires }) {
   return prisma.shareLink.create({
     data: {
       folderId,
@@ -14,6 +14,20 @@ async function createShareLink({ folderId, expires }) {
   });
 }
 
+async function createShareLinkForFile({ fileId, expires }) {
+  return prisma.shareLink.create({
+    data: {
+      fileId,
+      expires,
+    },
+    select: {
+      id: true,
+      expires: true,
+    },
+  });
+}
+
 module.exports = {
-  createShareLink,
+  createShareLinkForFolder,
+  createShareLinkForFile,
 };
