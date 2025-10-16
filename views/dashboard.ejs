@@ -153,6 +153,7 @@
                 <% } %>
               </td>
               <td>
+                <%if(item.type === "folder"){ %>
                 <form
                   action="/folders/<%=item.id%>/share"
                   method="post"
@@ -167,6 +168,22 @@
                   />
                   <button>Share</button>
                 </form>
+                <% }else {%>
+                <form
+                  action="/files/<%=item.id%>/share"
+                  method="post"
+                  onsubmit="return true"
+                >
+                  <input
+                    type="number"
+                    name="durationInHours"
+                    min="1"
+                    max="720"
+                    value="24"
+                  />
+                  <button>Share</button>
+                </form>
+                <% }%>
               </td>
               <td>
                 <% if(item.type === 'folder') {%>
