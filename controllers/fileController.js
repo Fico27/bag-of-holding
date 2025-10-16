@@ -4,6 +4,8 @@ const { uploadToDb } = require("../db/uploadFile");
 const { ownerFolderCheck } = require("../db/folderCheck");
 const dbDownloadFile = require("../db/downloadFile");
 const dbFileRepo = require("../db/fileRepo");
+const createShare = require("../db/createShare");
+const fileRepo = require("../db/fileRepo");
 
 const BUCKET = process.env.SUPABASE_BUCKET || "";
 
@@ -173,9 +175,30 @@ async function deleteFile(req, res) {
   }
 }
 
+async function postCreateFileShare(req, res) {
+  const user = req.user;
+  const fileId = Number(req.params.id);
+  const duration = Number(req.params.durationInHours || 24);
+
+  const file = await fileRepo.getOwnedFile(user.id, fileId);
+
+  if (!file) return res.status(404).send("File not found");
+
+  const expires = new Date(Date.now() + duration * 3600 * 1000);
+  const link = await createShare.createShareLinkForFile({ fileId, expires });
+
+  const absoluteUrl = `${req.protocol}://${req.get("host")}/shared/${link.id}`;
+
+  return res.render("share-created", {
+    url: absoluteUrl,
+    expires: link.expires,
+  });
+}
+
 module.exports = {
   uploadFile,
   downloadFile,
   renameFile,
   deleteFile,
+  postCreateFileShare,
 };

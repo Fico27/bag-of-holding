@@ -11,6 +11,7 @@
 
       <nav>
         <ul>
+          <li><a href="/signup">Sign up</a></li>
           <li><a href="/dashboard">Dashboard</a></li>
         </ul>
       </nav>
@@ -21,8 +22,8 @@
         <h1>Share link created!</h1>
 
         <p>
-          Anyone with this link can view the folder until it expires. Expires
-          in: <%=expires.toLocaleString()%> hours.
+          Anyone with this link can view the folder/file until it expires.
+          Expires in: <%=expires.toLocaleString()%> hours.
         </p>
         <div>
           <input id="shareUrl" value="<%= url %>" readonly />
