@@ -27,7 +27,7 @@ async function viewShared(req, res) {
         breadcrumbs: [], //REMINDER: ADD THIS LOGIC LATER
         items: [
           {
-            type: file,
+            type: "file",
             id: file.id,
             name: file.name,
             size: file.size,
