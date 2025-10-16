@@ -221,8 +221,10 @@ async function postCreateShare(req, res) {
 
   const link = await createShare.createShareLink({ folderId, expires });
 
+  const absoluteUrl = `${req.protocol}://${req.get("host")}/shared/${link.id}`;
+
   res.render("share-created", {
-    url: `/shared/${link.id}`,
+    url: absoluteUrl,
     expires: link.expires,
   });
 }
