@@ -37,6 +37,7 @@ model File {
   folderId   Int?
   folder     Folder?  @relation(fields: [folderId], references: [id])
   storageKey String?
+  shareLinks ShareLink[]
 }
 
 model Folder {
@@ -63,7 +64,12 @@ model Session {
 
 model ShareLink {
   id       String   @id @default(uuid())
-  folderId Int
-  folder   Folder   @relation(fields: [folderId], references: [id])
+  folderId Int?
+  fileId   Int?
+  folder   Folder?   @relation(fields: [folderId], references: [id])
+  file     File?     @relation(fields: [fileId], references: [id])
   expires  DateTime
+
+    @@index([folderId])
+    @@index([fileId])
 }
