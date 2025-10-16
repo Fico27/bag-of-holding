@@ -37,6 +37,7 @@ async function findSharedDownload(shareId) {
     select: {
       expires: true,
       folderId: true,
+      fileId,
     },
   });
 }
