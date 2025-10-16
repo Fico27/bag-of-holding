@@ -8,6 +8,23 @@ async function findSharedLink(linkId) {
       id: true,
       expires: true,
       folderId: true,
+      fileId: true,
+    },
+  });
+}
+async function findPublicFile(fileId) {
+  return prisma.file.findUnique({
+    where: {
+      id: fileId,
+    },
+    select: {
+      id: true,
+      name: true,
+      size: true,
+      uploadTime: true,
+      storageKey: true,
+      url: true,
+      folderId: true,
     },
   });
 }
@@ -101,4 +118,5 @@ module.exports = {
   getFoldersByParentPublic,
   getFilesByFolderPublic,
   getFileIfApproved,
+  findPublicFile,
 };
