@@ -41,15 +41,22 @@ async function viewShared(req, res) {
 
     const folderToShow = currentFolderId ?? link.folderId;
 
-    const [folders, files] = await Promise.all([
+    const [folders, files, breadcrumbs] = await Promise.all([
       sharedDb.getChildFoldersByPublic(folderToShow),
       sharedDb.getFilesByFolderPublic(folderToShow),
+      sharedDb.getPublicFolderTrail(folderToShow, link.folderId),
     ]);
+
+    const parentFolderId =
+      breadcrumbs && breadcrumbs.length >= 2
+        ? breadcrumbs[breadcrumbs.length - 2].id
+        : null;
 
     res.render("shared", {
       linkId,
       currentFolderId: folderToShow,
-      breadcrumbs: [],
+      breadcrumbs,
+      parentFolderId,
       items: [
         ...folders.map((folder) => ({
           type: "folder",
