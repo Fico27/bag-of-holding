@@ -172,6 +172,34 @@ async function collectEntriesForZip(rootFolderId, path = []) {
   return entries;
 }
 
+async function getPublicFolderTrail(currentFolderId, rootFolderId) {
+  if (currentFolderId === null) return [];
+
+  const trail = [];
+  let nodeId = currentFolderId;
+
+  while (nodeId != null) {
+    const node = await prisma.folder.findUnique({
+      where: { id: nodeId },
+      select: {
+        id: true,
+        name: true,
+        parentId: true,
+      },
+    });
+    if (!node) break;
+    trail.push({
+      id: node.id,
+      name: node.name,
+      parentId: node.parentId,
+    });
+
+    if (node.id === rootFolderId) break;
+    nodeId = node.parentId;
+  }
+  return trail.reverse();
+}
+
 module.exports = {
   findSharedLink,
   findSharedDownload,
@@ -182,4 +210,5 @@ module.exports = {
   isFolderWithinShare,
   collectEntriesForZip,
   findPublicFolder,
+  getPublicFolderTrail,
 };
