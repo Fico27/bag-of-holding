@@ -41,7 +41,7 @@
           <%if(currentFolderId !== null) {%>
 
           <a href="/dashboard">Dashboard/</a>
-          <% if(breadcrumbs && breadcrumbs.length) {%> <%
+          <% if(typeof breadcrumbs !== 'undefined' && breadcrumbs.length) {%> <%
           breadcrumbs.forEach((crumb, index) => { %> <% if (index <
           breadcrumbs.length -1) { %>
           <a href="/dashboard?folderId=<%=crumb.id%>"><%= crumb.name%>/</a>
