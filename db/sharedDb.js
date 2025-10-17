@@ -29,6 +29,13 @@ async function findPublicFile(fileId) {
   });
 }
 
+async function findPublicFolder(targetFolderId) {
+  return prisma.folder.findUnique({
+    where: { id: targetFolderId },
+    select: { id: true, name: true },
+  });
+}
+
 async function findSharedDownload(shareId) {
   return prisma.shareLink.findUnique({
     where: {
@@ -42,7 +49,7 @@ async function findSharedDownload(shareId) {
   });
 }
 
-async function getFoldersByParentPublic(parentFolderId) {
+async function getChildFoldersByPublic(parentFolderId) {
   return prisma.folder.findMany({
     where: { parentId: parentFolderId },
     orderBy: { createdAt: "asc" },
@@ -115,15 +122,15 @@ async function getFileIfApproved(fileId, mainFolderId) {
 
 //Check if folders are included in the share
 
-async function isFolderWithinShare(targetFoldId, rootFolderId) {
-  if (targetFoldId === rootFolderId) return true;
+async function isFolderWithinShare(targetFolderId, rootFolderId) {
+  if (targetFolderId === rootFolderId) return true;
 
   let pointer = await prisma.folder.findUnique({
     where: {
-      id: targetFoldId,
+      id: targetFolderId,
     },
     select: {
-      parentId,
+      parentId: true,
     },
   });
 
@@ -137,12 +144,42 @@ async function isFolderWithinShare(targetFoldId, rootFolderId) {
   return false;
 }
 
+async function collectEntriesForZip(rootFolderId, path = []) {
+  const folder = await prisma.folder.findUnique({
+    where: { id: rootFolderId },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+  if (!folder) return [];
+
+  const thisPath = [...path, folder.name];
+
+  //get files in current root folder
+  const files = await getFilesByFolderPublic(rootFolderId);
+  const entries = files.map((file) => ({
+    storageKey: file.storageKey,
+    zipPath: [...thisPath, file.name].join("/"),
+  }));
+
+  //get all child files within root folder
+  const children = await getChildFoldersByPublic(folder.id);
+  for (const child of children) {
+    const childEntries = await collectEntriesForZip(child.id, thisPath);
+    entries.push(...childEntries);
+  }
+  return entries;
+}
+
 module.exports = {
   findSharedLink,
   findSharedDownload,
-  getFoldersByParentPublic,
+  getChildFoldersByPublic,
   getFilesByFolderPublic,
   getFileIfApproved,
   findPublicFile,
   isFolderWithinShare,
+  collectEntriesForZip,
+  findPublicFolder,
 };
