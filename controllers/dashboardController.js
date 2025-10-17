@@ -35,11 +35,17 @@ async function getDashboard(req, res) {
 
     items.sort((a, b) => b.type.localeCompare(a.type));
 
+    const parentFolderId =
+      breadcrumbs && breadcrumbs.length >= 2
+        ? breadcrumbs[breadcrumbs.length - 2].id
+        : null;
+
     res.render("dashboard", {
       user,
       items,
       currentFolderId: folderId,
       breadcrumbs,
+      parentFolderId,
       errors: [],
     });
   } catch (error) {
@@ -49,6 +55,7 @@ async function getDashboard(req, res) {
       items: [],
       currentFolderId: folderId,
       breadcrumbs: [],
+      parentFolderId: null,
       errors: [{ msg: "failed to load files." }],
     });
   }
