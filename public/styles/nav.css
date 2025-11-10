@@ -2,6 +2,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 ul,
@@ -51,6 +52,20 @@ nav ul {
   border-color: #0d9488;
 }
 
+.logo-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 50px;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+.logo-text {
+  display: inline-block;
+}
 /* --color-primary:        #0D9488;   
   --color-primary-hover:  #0F766E;   
   --color-primary-light:  #E6F4F1;   

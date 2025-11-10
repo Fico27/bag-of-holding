@@ -1,0 +1,24 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  margin-top: 3rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-main {
+  width: 150px;
+}
