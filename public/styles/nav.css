@@ -1,0 +1,73 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ul,
+li {
+  text-decoration: none;
+  list-style: none;
+}
+
+a {
+  color: #0d9488;
+  text-decoration: none;
+}
+a:visited,
+a:link,
+a:active {
+  text-decoration: none;
+}
+
+nav {
+  width: 50%;
+}
+
+nav ul {
+  display: flex;
+  justify-content: right;
+}
+
+.button {
+  border-radius: 5px;
+  border: 1px solid #e6f4f1;
+  padding: 1rem 1.5rem;
+  margin: 0 1rem;
+}
+
+.login {
+  color: #e6f4f1;
+  background-color: #0d9488;
+}
+
+.login:hover {
+  background-color: #0f766e;
+  border-color: #0d9488;
+}
+
+.signup:hover {
+  background-color: #e6f4f1;
+  border-color: #0d9488;
+}
+
+/* --color-primary:        #0D9488;   
+  --color-primary-hover:  #0F766E;   
+  --color-primary-light:  #E6F4F1;   
+
+  --color-bg:             #F8FAFC;   
+  --color-surface:        #FFFFFF;
+  --color-border:         #E2E8F0;   
+
+   Text 
+  --color-text:           #1E293B;   
+  --color-text-muted:     #64748B;   
+
+   Feedback 
+  --color-success:        #10B981;   
+  --color-error:          #EF4444;   
+  --color-warning:        #F59E0B;   
+
+  Neutrals 
+  --color-gray-100:       #F1F5F9;   
+  --color-gray-200:       #E2E8F0;    */
