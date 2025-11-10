@@ -4,14 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
+
+    <link rel="stylesheet" href="/styles/nav.css" />
   </head>
   <body>
     <header>
-      <h1>Drive of Holding</h1>
+      <div class="logo-holder">
+        <img class="logo" src="/images/logo.svg" alt="" />
+        <h1 class="logo-text">Drive of Holding</h1>
+      </div>
 
       <nav>
         <ul>
-          <li><a href="/">Home</a></li>
+          <li><a href="/" class="button">Home</a></li>
           <!-- <li><a href="/logout">Log out</a></li> -->
           <li>
             <form action="/logout" method="post">
