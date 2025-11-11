@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DoH - Sign up</title>
     <link rel="stylesheet" href="/styles/nav.css" />
+    <link rel="stylesheet" href="/styles/signup.css" />
   </head>
   <body>
     <header>
@@ -22,19 +23,18 @@
     </header>
 
     <main>
-      <form action="/signup" method="post">
+      <% if( errors && errors.length){ %>
+      <ul style="color: red">
+        <% errors.forEach(error => { %>
+        <li><%=error.msg %></li>
+        <% }); %>
+      </ul>
+
+      <% } %>
+      <form class="signup-form" action="/signup" method="post">
         <h2>Create an account here!</h2>
 
-        <% if( errors && errors.length){ %>
-        <ul style="color: red">
-          <% errors.forEach(error => { %>
-          <li><%=error.msg %></li>
-          <% }); %>
-        </ul>
-
-        <% } %>
-
-        <label for="firstname">First name</label>
+        <label for="firstname">First name:</label>
         <input
           type="text"
           name="firstname"
@@ -42,7 +42,7 @@
           value=" <%= formInfo.firstname || '' %>"
         />
 
-        <label for="lastname">Last name</label>
+        <label for="lastname">Last name:</label>
         <input
           type="text"
           name="lastname"
@@ -64,7 +64,7 @@
         <label for="confirm_password">Confirm Password:</label>
         <input type="password" name="confirm_password" id="confirm_password" />
 
-        <button type="submit">Sign up</button>
+        <button class="signup-btn" type="submit">Sign up</button>
       </form>
     </main>
   </body>
