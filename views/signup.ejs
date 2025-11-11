@@ -23,12 +23,14 @@
     </header>
 
     <main>
-      <% if( errors && errors.length){ %>
-      <ul style="color: red">
-        <% errors.forEach(error => { %>
-        <li><%=error.msg %></li>
-        <% }); %>
-      </ul>
+      <div class="error-container">
+        <% if( errors && errors.length){ %>
+        <ul class="error-ul" style="color: red">
+          <% errors.forEach(error => { %>
+          <li><%=error.msg %></li>
+          <% }); %>
+        </ul>
+      </div>
 
       <% } %>
       <form class="signup-form" action="/signup" method="post">

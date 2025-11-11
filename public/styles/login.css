@@ -64,6 +64,12 @@ input:focus {
   background-color: #e2e8f0;
 }
 
+.error-ul {
+  margin-top: 2rem;
+  padding: 0;
+  text-align: center;
+}
+
 /* --color-primary:        #0D9488;   
   --color-primary-hover:  #0F766E;   
   --color-primary-light:  #E6F4F1;   
