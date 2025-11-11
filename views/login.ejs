@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DoH - Log in</title>
     <link rel="stylesheet" href="/styles/nav.css" />
+    <link rel="stylesheet" href="/styles/login.css" />
   </head>
   <body>
     <header>
@@ -30,7 +31,7 @@
       </ul>
       <%}%>
 
-      <form action="/login" method="post">
+      <form class="login-form" action="/login" method="post">
         <label for="username">Email:</label>
         <input
           type="email"
@@ -43,7 +44,7 @@
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required />
 
-        <button type="submit">Log in</button>
+        <button class="login-btn" type="submit">Log in</button>
       </form>
     </main>
   </body>
