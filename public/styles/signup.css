@@ -9,12 +9,12 @@ main {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }
 
 .signup-form {
-  width: 30%;
+  width: 25%;
   min-width: 300px;
   min-height: 70%;
   display: flex;
@@ -22,10 +22,10 @@ main {
   justify-content: center;
   align-items: center;
   border: 2px solid #e2e8f0;
+  margin-top: 2rem;
   border-radius: 5px;
-  margin-top: 4rem;
   background-color: #e6f4f1;
-
+  padding: 0 3rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 1px 3px rgba(0, 0, 0, 0.1);
