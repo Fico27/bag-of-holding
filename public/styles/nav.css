@@ -66,6 +66,23 @@ nav ul {
 .logo-text {
   display: inline-block;
 }
+
+.logout {
+  font-size: 1rem;
+  color: #e6f4f1;
+  background-color: #0d9488;
+  border-radius: 5px;
+  border: 1px solid #e6f4f1;
+  padding: 1rem 1.5rem;
+  margin: 0 1rem;
+}
+
+.logout:hover {
+  background-color: #e6f4f1;
+  border-color: #0d9488;
+  color: #0d9488;
+}
+
 /* --color-primary:        #0D9488;   
   --color-primary-hover:  #0F766E;   
   --color-primary-light:  #E6F4F1;   
