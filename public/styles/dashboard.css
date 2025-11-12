@@ -1,0 +1,92 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+  margin: 1rem;
+}
+
+.main-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.items-container {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.create-controls {
+  float: right;
+}
+
+.items-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background: var(--color-surface, #ffffff);
+  font-size: 0.95rem;
+}
+
+.items-table thead th {
+  background: var(--color-primary-light, #e6f4f1);
+  color: var(--color-text, #1e293b);
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--color-primary, #0d9488);
+}
+
+.items-table tbody tr {
+  transition: background 0.15s ease;
+}
+.items-table tbody tr:nth-child(even) {
+  background: var(--color-gray-100, #f1f5f9);
+}
+.items-table tbody tr:hover {
+  background: var(--color-primary-light, #e6f4f1);
+}
+
+.items-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  vertical-align: middle;
+}
+
+.items-table a {
+  color: var(--color-primary, #0d9488);
+  text-decoration: none;
+  font-weight: 500;
+}
+.items-table a:hover {
+  text-decoration: underline;
+  color: var(--color-primary-hover, #0f766e);
+}
+
+/* --color-primary:        #0D9488;   
+  --color-primary-hover:  #0F766E;   
+  --color-primary-light:  #E6F4F1;   
+
+  --color-bg:             #F8FAFC;   
+  --color-surface:        #FFFFFF;
+  --color-border:         #E2E8F0;   
+
+   Text 
+  --color-text:           #1E293B;   
+  --color-text-muted:     #64748B;   
+
+   Feedback 
+  --color-success:        #10B981;   
+  --color-error:          #EF4444;   
+  --color-warning:        #F59E0B;   
+
+  Neutrals 
+  --color-gray-100:       #F1F5F9;   
+  --color-gray-200:       #E2E8F0;    */
