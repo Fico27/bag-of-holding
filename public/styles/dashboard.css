@@ -1,24 +1,38 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body,
 html {
   height: 100%;
+  width: 100%;
   margin: 0;
 }
 
 main {
   height: 100%;
   width: 100%;
-  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 }
 
 .main-header {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
 }
 
 .items-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 2rem;
-  width: 100%;
+  width: 90%;
+
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 1px 3px rgba(0, 0, 0, 0.1);
