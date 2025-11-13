@@ -53,16 +53,20 @@
           </form>
         </div>
 
-        <nav>
+        <nav class="breadcrumbs">
           <%if(currentFolderId !== null) {%>
 
-          <a href="/dashboard">Dashboard/</a>
+          <a class="breadcrumb" href="/dashboard">Dashboard</a>
+          <span class="separator">/</span>
           <% if(typeof breadcrumbs !== 'undefined' && breadcrumbs.length) {%> <%
           breadcrumbs.forEach((crumb, index) => { %> <% if (index <
           breadcrumbs.length -1) { %>
-          <a href="/dashboard?folderId=<%=crumb.id%>"><%= crumb.name%>/</a>
+          <a class="breadcrumb" href="/dashboard?folderId=<%=crumb.id%>"
+            ><%= crumb.name%>/</a
+          >
+          <span class="separator">/</span>
           <% } else {%>
-          <span> <%=crumb.name %></span>
+          <span class="current-breadcrumb"> <%=crumb.name %></span>
           <%}%> <% }) %> <% }%> <% } %>
         </nav>
       </section>
