@@ -4,21 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard-Guest</title>
+    <link rel="stylesheet" href="/styles/nav.css" />
+    <link rel="stylesheet" href="/styles/shared.css" />
   </head>
   <body>
     <header>
-      <h1>Drive of Holding</h1>
+      <div class="logo-holder">
+        <img class="logo" src="/images/logo.svg" alt="" />
+        <h1 class="logo-text">Drive of Holding</h1>
+      </div>
 
       <nav>
         <ul>
-          <li><a href="/">Home</a></li>
+          <li><a class="button homepage" href="/">Home</a></li>
+          <li><a href="/signup" class="button signup">Sign up</a></li>
         </ul>
       </nav>
     </header>
 
     <main>
       <section class="main-header">
-        <h2>Welcome, guest</h2>
+        <h2>Welcome, Guest!</h2>
 
         <nav>
           <%if(currentFolderId !== null) {%>
@@ -28,10 +34,10 @@
           breadcrumbs.forEach((crumb, index) => { %> <% if (index <
           breadcrumbs.length -1) { %>
           <a href="/shared/<%=linkId%>?folderId=<%=crumb.id%>"
-            ><%= crumb.name%>/</a
+            ><%= crumb.name%> /</a
           >
           <% } else {%>
-          <span> <%=crumb.name %></span>
+          <span> <%=crumb.name %> /</span>
           <%}%> <% }) %> <% }%> <% } %>
         </nav>
       </section>
@@ -51,7 +57,7 @@
           <h3>You current have no files or folders!</h3>
         </div>
         <%} else {%>
-        <table>
+        <table class="items-table">
           <thead>
             <tr>
               <th>Name</th>
