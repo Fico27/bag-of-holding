@@ -4,15 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drive of Holding</title>
+    <link rel="stylesheet" href="/styles/nav.css" />
+    <link rel="stylesheet" href="" />
   </head>
   <body>
     <header>
       <h1>Drive of Holding</h1>
 
-      <nav>
+      <nav class="share-nav">
         <ul>
-          <li><a href="/signup">Sign up</a></li>
-          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a class="dashboard button" href="/dashboard">Dashboard</a></li>
+          <li>
+            <form action="/logout" method="post">
+              <button class="logout" type="submit">Log out</button>
+            </form>
+          </li>
         </ul>
       </nav>
     </header>
