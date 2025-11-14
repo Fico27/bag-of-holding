@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/styles/dashboard.css" />
   </head>
   <body>
+    <script>
+      window.currentFolderId = <%= JSON.stringify(currentFolderId || null) %>;
+    </script>
+
     <header>
       <div class="logo-holder">
         <img class="logo" src="/images/logo.svg" alt="" />

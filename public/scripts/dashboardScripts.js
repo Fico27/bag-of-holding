@@ -37,7 +37,7 @@ document.addEventListener("keydown", (e) => {
 // Create folder UI
 
 document.getElementById("showFolderModal").addEventListener("click", () => {
-  const currentFolderId = "<%= currentFolderId || '' %>";
+  const currentFolderId = window.currentFolderId || "";
   const html = `
     <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
     <h3 class="text-lg font-semibold mb-3">Create New Folder</h3>
@@ -52,7 +52,7 @@ document.getElementById("showFolderModal").addEventListener("click", () => {
 // Upload file UI
 
 document.getElementById("showUploadModal").addEventListener("click", () => {
-  const currentFolderId = "<%= currentFolderId || '' %>";
+  const currentFolderId = window.currentFolderId || "";
   const html = `
     <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
     <h3 class="text-lg font-semibold mb-3">Upload File</h3>
