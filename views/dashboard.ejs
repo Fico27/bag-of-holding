@@ -31,26 +31,14 @@
         <h2>Welcome, <%=user.firstname %></h2>
 
         <div class="create-controls">
-          <form action="/folders" method="post">
-            <input
-              type="hidden"
-              name="parentId"
-              value="<%= currentFolderId ||
-            ''  %>"
-            />
-            <input type="text" name="name" required />
-            <button type="submit">Create Folder</button>
-          </form>
+          <button id="showFolderModal" class="btn-primary">
+            Create Folder
+          </button>
+          <button id="showUploadModal" class="btn-primary">Upload File</button>
+        </div>
 
-          <form action="/files" method="post" enctype="multipart/form-data">
-            <input
-              type="hidden"
-              name="folderId"
-              value="<%=currentFolderId || '' %>"
-            />
-            <input type="file" name="file" required />
-            <button>Upload File</button>
-          </form>
+        <div id="modalOverlay" class="modal-overlay hidden">
+          <div id="modalContent" class="modal-content"></div>
         </div>
 
         <nav class="breadcrumbs">
