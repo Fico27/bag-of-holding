@@ -105,35 +105,12 @@
               <td><%= item.type === 'file' ? fileSize(item.size) : '-' %></td>
               <td><%= item.date.toLocaleString() %></td>
               <td>
-                <% if(item.type === 'folder') {%>
-                <form
-                  action="/folders/<%=item.id%>/rename"
-                  method="post"
-                  onsubmit="return renamePrompt(this)"
+                <button
+                  class="btn-link"
+                  onclick="openRenameModal(<%= item.id %>, '<%= item.type %>', '<%= item.name %>', <%= currentFolderId || null %>)"
                 >
-                  <input
-                    type="hidden"
-                    name="currentFolderId"
-                    value="<%=currentFolderId ?? ''%>"
-                  />
-                  <input type="hidden" name="name" value="" />
-                  <button>Rename</button>
-                </form>
-                <%} else {%>
-                <form
-                  action="/files/<%=item.id%>/rename"
-                  method="post"
-                  onsubmit="return renamePrompt(this)"
-                >
-                  <input
-                    type="hidden"
-                    name="currentFolderId"
-                    value="<%=currentFolderId ?? ''%>"
-                  />
-                  <input type="hidden" name="name" value="" />
-                  <button>Rename</button>
-                </form>
-                <% }%>
+                  Rename
+                </button>
               </td>
               <td>
                 <% if (item.type === 'folder') { %>
@@ -143,37 +120,12 @@
                 <% } %>
               </td>
               <td>
-                <%if(item.type === "folder"){ %>
-                <form
-                  action="/folders/<%=item.id%>/share"
-                  method="post"
-                  onsubmit="return true"
+                <button
+                  class="btn-link"
+                  onclick="openShareModal(<%= item.id %>, '<%= item.type %>')"
                 >
-                  <input
-                    type="number"
-                    name="durationInHours"
-                    min="1"
-                    max="720"
-                    value="24"
-                  />
-                  <button>Share</button>
-                </form>
-                <% }else {%>
-                <form
-                  action="/files/<%=item.id%>/share"
-                  method="post"
-                  onsubmit="return true"
-                >
-                  <input
-                    type="number"
-                    name="durationInHours"
-                    min="1"
-                    max="720"
-                    value="24"
-                  />
-                  <button>Share</button>
-                </form>
-                <% }%>
+                  Share
+                </button>
               </td>
               <td>
                 <% if(item.type === 'folder') {%>
