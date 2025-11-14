@@ -108,8 +108,6 @@ main {
 .current-breadcrumb {
   padding: 0.35rem 0.75rem;
   border-radius: 0.5rem;
-  background: #e8eef7;
-  border: 1px double black;
   font-weight: bold;
   cursor: default;
 }
@@ -251,10 +249,12 @@ main {
 
 .btn-link {
   color: var(--color-primary);
-  text-decoration: underline;
   background: none;
   border: none;
   cursor: pointer;
+}
+.btn-link:hover {
+  text-decoration: underline;
 }
 
 /* --color-primary:        #0D9488;   
