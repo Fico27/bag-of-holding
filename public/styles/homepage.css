@@ -31,3 +31,8 @@ section {
   height: 100%;
   margin-top: 2rem;
 }
+
+.homepage-img {
+  max-width: 100%;
+  margin-top: 1rem;
+}
