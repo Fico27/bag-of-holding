@@ -106,10 +106,8 @@ main {
 }
 
 .current-breadcrumb {
-  padding: 0.35rem 0.75rem;
+  padding: 0.35rem 0.2rem;
   border-radius: 0.5rem;
-  background: #e8eef7;
-  border: 1px double black;
   font-weight: bold;
   cursor: default;
 }
