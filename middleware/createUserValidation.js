@@ -14,7 +14,7 @@ const createUserValidation = [
       blacklisted_chars: "",
       ignore_max_length: false,
     })
-    .normalizeEmail()
+    // .normalizeEmail()
     .withMessage("Invalid email address!"),
   body("password")
     .isLength({ min: 6 })
