@@ -6,26 +6,36 @@ const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 passport.use(
-  new LocalStrategy(async (email, password, done) => {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          email: email.trim(),
-        },
-      });
-      if (!user) {
-        return done(null, false, { message: "Incorrect username or password" });
+  new LocalStrategy(
+    {
+      usernameField: "email", // ← this line
+      passwordField: "password",
+    },
+    async (email, password, done) => {
+      try {
+        const user = await prisma.user.findUnique({
+          where: {
+            email: email.trim(),
+          },
+        });
+        if (!user) {
+          return done(null, false, {
+            message: "Incorrect username or password",
+          });
+        }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          return done(null, false, {
+            message: "Incorrect username or password",
+          });
+        }
+        return done(null, user);
+      } catch (err) {
+        console.error(err);
+        return done(err);
       }
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        return done(null, false, { message: "Incorrect username or password" });
-      }
-      return done(null, user);
-    } catch (err) {
-      console.error(err);
-      return done(err);
     }
-  })
+  )
 );
 
 passport.serializeUser((user, done) => {
