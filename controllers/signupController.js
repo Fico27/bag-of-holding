@@ -6,11 +6,11 @@ async function getSignup(req, res) {
 }
 
 async function postSignup(req, res) {
-  const { username, password, firstname, lastname } = req.body;
+  const { email, password, firstname, lastname } = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await createUser(username, hashedPassword, firstname, lastname);
+    await createUser(email, hashedPassword, firstname, lastname);
 
     res.redirect("/login");
   } catch (error) {
