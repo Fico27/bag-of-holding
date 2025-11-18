@@ -3,8 +3,17 @@ const { body, validationResult } = require("express-validator");
 const createUserValidation = [
   body("firstname").trim().notEmpty().withMessage("First name is required!"),
   body("lastname").trim().notEmpty().withMessage("Last name is required!"),
-  body("username")
-    .isEmail()
+  body("email")
+    .isEmail({
+      allow_display_name: false,
+      require_display_name: false,
+      allow_utf8_local_part: true,
+      require_tld: true,
+      allow_ip_domain: false,
+      domain_specific_validation: false,
+      blacklisted_chars: "",
+      ignore_max_length: false,
+    })
     .normalizeEmail()
     .withMessage("Invalid email address!"),
   body("password")
